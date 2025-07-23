@@ -10,8 +10,8 @@ class ApiService {
       TranslateModel langTranslate, String text) async {
     final response = await http.get(Uri.parse(apiUrl).replace(
       queryParameters: {
-        "from": langTranslate.from.toLowerCase(),
-        "to": langTranslate.to.toLowerCase(),
+        "from": langTranslate.from.replaceAll("-", "_").toLowerCase(),
+        "to": langTranslate.to.replaceAll("-", "_").toLowerCase(),
         "text": text
       },
     ));

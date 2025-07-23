@@ -31,10 +31,25 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _handleSwapLanguage() {
+  void swapLanguage() {
     setState(() {
       _translate = TranslateModel(_translate.to, _translate.from);
     });
+  }
+
+  void _handleSelectLanguage(String fromOrTo, String value) {
+    final isFrom = fromOrTo == "from";
+    final currentValue = isFrom ? _translate.to : _translate.from;
+
+    if (value == currentValue) {
+      swapLanguage();
+    } else {
+      setState(() {
+        _translate = isFrom
+            ? TranslateModel(value, _translate.to)
+            : TranslateModel(_translate.from, value);
+      });
+    }
   }
 
   void _handleClearInput() {
@@ -85,7 +100,11 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(children: [
-          LangControll(translate: _translate, onSwap: _handleSwapLanguage),
+          LangControll(
+            translate: _translate,
+            onSwap: swapLanguage,
+            onLangSelect: _handleSelectLanguage,
+          ),
           TranslateBox(
             title: _translate.from,
             onClear: _handleClearInput,
